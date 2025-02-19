@@ -1,11 +1,14 @@
+
+
 import argparse
 import json
-from transformers import VisionEncoderDecoderModel, AutoProcessor
+from transformers import VisionEncoderDecoderModel, TrOCRProcessor, AutoProcessor
 from PIL import Image
 
 # Load your specific TrOCR model
-torch_processor = AutoProcessor.from_pretrained(r"D:\XAMK\Internship\Trainnig_rep\digitalia_trainning\multicentury-htr-model")
-torch_model = VisionEncoderDecoderModel.from_pretrained(r"D:\XAMK\Internship\Trainnig_rep\digitalia_trainning\multicentury-htr-model")
+torch_processor = AutoProcessor.from_pretrained(r"D:\XAMK\Internship\Trainnig_rep\digitalia_trainning\models\multicentury-htr-model")
+torch_model = VisionEncoderDecoderModel.from_pretrained(r"D:\XAMK\Internship\Trainnig_rep\digitalia_trainning\models\multicentury-htr-model")
+
 
 def ocr_trocr(image_path):
     """
