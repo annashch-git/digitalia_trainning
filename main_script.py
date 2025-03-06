@@ -1,3 +1,8 @@
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 import argparse
 import subprocess
 import json
@@ -40,6 +45,10 @@ def extract_json_from_output(output: str) -> dict:
     logging.error("Could not extract JSON from output.")
     return {"error": "JSON not found in output"}
 
+
+
+
+
 def run_ocr_model(model_name: str, image_path: str) -> dict:
     """
     Run the selected OCR model inside its corresponding virtual environment.
@@ -69,9 +78,17 @@ def run_ocr_model(model_name: str, image_path: str) -> dict:
     logging.debug("Executing command: %s", " ".join(command))
 
     try:
-        result = subprocess.run(command, capture_output=True, text=True)
+        result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, encoding="utf-8")
+        if result.returncode != 0:
+            logging.error("Script exited with code %d", result.returncode)
+            logging.error("stderr: %s", result.stderr)
+            return {"error": f"Script exited with code {result.returncode}", "stderr": result.stderr}
+        logging.debug("OCR output: %s", result.stdout)
+        return extract_json_from_output(result.stdout)
+
     except Exception as e:
         logging.error("Error executing command: %s", e)
+        logging.error("Traceback:\n%s", traceback.format_exc())  # Вывод полного стека ошибки
         return {"error": str(e)}
 
     logging.debug("stdout: %s", result.stdout)
@@ -80,8 +97,37 @@ def run_ocr_model(model_name: str, image_path: str) -> dict:
     if result.returncode != 0:
         logging.error("Script exited with code %d", result.returncode)
         return {"error": f"Script exited with code {result.returncode}", "stderr": result.stderr}
-
+    logging.debug("OCR output: %s", result.stdout)
     return extract_json_from_output(result.stdout)
+
+
+def save_results_to_file(image_path: str, model_name: str, ocr_result: dict):
+    """
+    Save the OCR result to a text file in the same directory as the image.
+    
+    Args:
+        image_path: The path to the image file.
+        model_name: The name of the OCR model.
+        ocr_result: The result of the OCR processing.
+    """
+    # Extract the directory and filename of the image
+    image_dir = os.path.dirname(image_path)
+    image_filename = os.path.basename(image_path)
+    
+    # Create the output file name
+    output_filename = f"{os.path.splitext(image_filename)[0]}_{model_name}.txt"
+    output_path = os.path.join(image_dir, output_filename)
+    
+    # Extract the OCR text from the result (assuming it is in a 'text' field)
+    ocr_text = ocr_result.get("result", "")
+    
+    # Write the result to the file
+    try:
+        with open(output_path, "w", encoding="utf-8") as f:
+            f.write(ocr_text)
+        logging.info("OCR result saved to: %s", output_path)
+    except Exception as e:
+        logging.error("Error saving OCR result to file: %s", e)
 
 def main():
     parser = argparse.ArgumentParser(description="Run a selected OCR model on an image.")
@@ -98,7 +144,8 @@ def main():
         sys.exit(1)
 
     result = run_ocr_model(args.model, args.image_path)
-    print(json.dumps(result, indent=4, ensure_ascii=False))
+    save_results_to_file(args.image_path, args.model, result)
+
 
 if __name__ == "__main__":
     main()
