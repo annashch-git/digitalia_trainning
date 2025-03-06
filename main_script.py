@@ -1,3 +1,5 @@
+# 
+
 import sys
 import io
 
@@ -19,7 +21,6 @@ MODELS = {
     "trocr": {"env": ".venv", "script": "models/trocr_ocr.py"},
     "easyocr": {"env": ".venv", "script": "models/easyocr_ocr.py"},
     "paddleocr": {"env": ".venv", "script": "models/paddleocr_ocr.py"},
-    "keras": {"env": "keras_env", "script": "models/keras_model.py"},
 }
 
 def extract_json_from_output(output: str) -> dict:
@@ -44,10 +45,6 @@ def extract_json_from_output(output: str) -> dict:
             return {"error": "Failed to parse JSON from output"}
     logging.error("Could not extract JSON from output.")
     return {"error": "JSON not found in output"}
-
-
-
-
 
 def run_ocr_model(model_name: str, image_path: str) -> dict:
     """
@@ -91,16 +88,6 @@ def run_ocr_model(model_name: str, image_path: str) -> dict:
         logging.error("Traceback:\n%s", traceback.format_exc())  # Вывод полного стека ошибки
         return {"error": str(e)}
 
-    logging.debug("stdout: %s", result.stdout)
-    logging.debug("stderr: %s", result.stderr)
-
-    if result.returncode != 0:
-        logging.error("Script exited with code %d", result.returncode)
-        return {"error": f"Script exited with code {result.returncode}", "stderr": result.stderr}
-    logging.debug("OCR output: %s", result.stdout)
-    return extract_json_from_output(result.stdout)
-
-
 def save_results_to_file(image_path: str, model_name: str, ocr_result: dict):
     """
     Save the OCR result to a text file in the same directory as the image.
@@ -130,8 +117,7 @@ def save_results_to_file(image_path: str, model_name: str, ocr_result: dict):
         logging.error("Error saving OCR result to file: %s", e)
 
 def main():
-    parser = argparse.ArgumentParser(description="Run a selected OCR model on an image.")
-    parser.add_argument("model", type=str, help=f"OCR model name ({', '.join(MODELS.keys())}).")
+    parser = argparse.ArgumentParser(description="Run OCR models on an image and save results.")
     parser.add_argument("image_path", type=str, help="Path to the image file.")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose debug output.")
     args = parser.parse_args()
@@ -143,9 +129,9 @@ def main():
         logging.error("Image not found: %s", args.image_path)
         sys.exit(1)
 
-    result = run_ocr_model(args.model, args.image_path)
-    save_results_to_file(args.image_path, args.model, result)
-
+    for model_name in MODELS.keys():
+        result = run_ocr_model(model_name, args.image_path)
+        save_results_to_file(args.image_path, model_name, result)
 
 if __name__ == "__main__":
     main()
