@@ -21,8 +21,6 @@ This project compares the performance of various OCR (Optical Character Recognit
    - Transformer-based models capable of recognizing both printed and handwritten text.  
 5. **Ollama (LLaVA-based OCR)**  
    - Uses a vision-language model for OCR, capable of understanding complex text layouts.  
-6. **Python Logging**  
-   - Used to filter unnecessary messages and improve the clarity of output.  
 
 ---
 
@@ -31,12 +29,12 @@ This project compares the performance of various OCR (Optical Character Recognit
 To analyze an image using all OCR models, run the following command in your terminal:  
 
 ```bash
-python main.py <path_to_image>
+python main_script.py <path_to_image>
 ```
 
 #### Example:  
 ```bash
-python main.py figure-65.png
+python main_script.py figure-65.png
 ```  
 
 This command will process the image using all available models and save the results to corresponding text files in the same directory as the input image.  
@@ -46,12 +44,12 @@ This command will process the image using all available models and save the resu
 If you want to run a specific OCR model instead of all models, modify the command as follows:  
 
 ```bash
-python models/<model_script>.py --image_path <path_to_image>
+python models/<model_script>.py <path_to_image>
 ```
 
 #### Example (Running Tesseract OCR only):  
 ```bash
-python models/tesseract_ocr.py --image_path figure-65.png
+python models/tesseract_ocr.py figure-65.png
 ```
 
 ---
@@ -67,21 +65,6 @@ To ensure output readability and suppress verbose logs:
 
 ---
 
-## Notes and Considerations  
-
-1. **TrOCR**  
-   - Performs well on handwritten text but may have reduced accuracy with printed text.  
-2. **PaddleOCR**  
-   - Optimal performance is achieved using a GPU.  
-3. **EasyOCR**  
-   - Offers ease of integration but can be slower on larger images.  
-4. **Ollama (LLaVA OCR)**  
-   - Requires a running Ollama server.  
-   - Works best with GPU but can be forced to run on CPU using the environment variable `OLLAMA_NO_CUDA=1`.  
-   - Recommended for complex text extraction scenarios where traditional OCR struggles.  
-
----
-
 ## Environment Configuration  
 
 Each OCR model runs in its designated virtual environment:  
@@ -94,17 +77,6 @@ Each OCR model runs in its designated virtual environment:
 | PaddleOCR | `.venv` |
 | Ollama | `.venv_ollama` |
 
-Ensure the correct virtual environment is activated before running the script:  
-
-```bash
-source .venv/bin/activate  # Linux/macOS
-.venv\Scripts\activate     # Windows
-```
-For Ollama:
-```bash
-source .venv_ollama/bin/activate  # Linux/macOS
-.venv_ollama\Scripts\activate     # Windows
-```
 
 If Ollama is not running, start the server manually before executing the script:  
 ```bash
@@ -126,5 +98,3 @@ image_ollamaocr.txt
 ```
 
 ---
-
-This updated **README** includes **Ollama** and provides clear usage instructions. Let me know if нужно внести правки!
