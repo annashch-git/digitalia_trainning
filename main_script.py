@@ -19,6 +19,7 @@ MODELS = {
     "trocr": {"env": ".venv", "script": "models/trocr_ocr.py"},
     "easyocr": {"env": ".venv", "script": "models/easyocr_ocr.py"},
     "paddleocr": {"env": ".venv", "script": "models/paddleocr_ocr.py"},
+    "ollamaocr": {"env": ".venv_ollama", "script": "models/ollama_ocr.py"},
 }
 
 def extract_json_from_output(output: str) -> dict:
