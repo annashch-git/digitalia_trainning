@@ -7,6 +7,7 @@ __pycache__/
 .venv/
 .venv_ollama/
 ELKA/
+HTR/
 
 # Dependency management
 .Python
