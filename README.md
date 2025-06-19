@@ -125,3 +125,21 @@ Use `compare_texts.py` to calculate Word Error Rate (WER) and Character Error Ra
 ```bash
 python compare_texts.py ground_truth.txt image_tesseract.txt
 ```
+
+## Post-processing OCR Output
+
+For Finnish texts, additional cleanup can be performed using
+[libvoikko](https://voikko.puimula.org/). Two helper scripts are provided:
+
+- `postprocess_with_libvoikko.py` &ndash; spell-checks a single OCR result and
+  writes the corrected text to `<name>__Libvoikko.txt`.
+- `postprocess_with_libvoikko_files.py` &ndash; processes every text file in a
+  folder.
+
+Example for a single file:
+
+```bash
+python postprocess_with_libvoikko.py ground_truth.txt image_tesseract.txt
+```
+
+The script also prints WER and CER statistics after applying the corrections.
