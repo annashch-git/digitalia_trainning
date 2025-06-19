@@ -24,6 +24,26 @@ This project compares the performance of various OCR (Optical Character Recognit
 
 ---
 
+## Installation
+
+1. Create a virtual environment for the main OCR models and install dependencies:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate  # on Windows use .venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+2. For the Ollama model, create a separate environment:
+
+```bash
+python -m venv .venv_ollama
+source .venv_ollama/bin/activate  # on Windows use .venv_ollama\Scripts\activate
+pip install -r requirements_ollama.txt
+```
+
+Make sure the `pytesseract.pytesseract.tesseract_cmd` variable in `models/tesseract_ocr.py` points to your local Tesseract executable.
+
 ## Usage Instructions  
 
 To analyze an image using all OCR models, run the following command in your terminal:  
@@ -98,3 +118,10 @@ image_ollamaocr.txt
 ```
 
 ---
+## Comparing Results
+
+Use `compare_texts.py` to calculate Word Error Rate (WER) and Character Error Rate (CER) between ground truth text and the OCR output:
+
+```bash
+python compare_texts.py ground_truth.txt image_tesseract.txt
+```
