@@ -1,3 +1,16 @@
+# This script post-processes OCR results for Finnish text using the Voikko spellchecker.
+# It:
+#   1. Reads a ground truth text file and normalizes it (lowercasing, removing extra spaces, unifying line breaks).
+#   2. Processes all OCR output files in a specified folder:
+#       - Applies the same normalization.
+#       - Runs Finnish spellchecking with Voikko and replaces misspelled words with the first suggestion.
+#       - Cleans up spacing around punctuation.
+#       - Saves the corrected text with a "__Libvoikko.txt" suffix.
+#   3. Calculates and prints Word Error Rate (WER) and Character Error Rate (CER) 
+#      between the normalized ground truth and the post-processed OCR text.
+# Usage:
+#   python postprocess_with_libvoikko.py <ground_truth.txt> <ocr_folder>
+
 import libvoikko
 import sys
 import os

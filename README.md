@@ -8,6 +8,16 @@ This project compares the performance of various OCR (Optical Character Recognit
 - Analyze the impact of text type (printed vs. handwritten) on model performance.  
 - Develop a versatile tool for OCR model evaluation, suitable for integration into other projects.  
 
+
+## Project Structure
+
+- `main_script.py` – orchestrates running all OCR engines on the target image.
+- `compare_texts.py` – computes error metrics such as WER and CER.
+- `postprocess_with_libvoikko.py` – spell-checks and corrects a single OCR result.
+- `postprocess_with_libvoikko_files.py` – batch version for processing folders.
+- `trocr_by_annotation.py` – runs the TrOCR model using region annotations.
+- `models/` – contains individual implementations for each OCR model.
+
 ---
 
 ## Libraries and Technologies Used  

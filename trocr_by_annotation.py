@@ -1,3 +1,13 @@
+# This script performs OCR on specific regions of an image using a fine-tuned TrOCR model,
+# based on bounding boxes provided in an annotation JSON file. 
+# For each text region:
+#   1. Crops the region from the image according to the bounding box coordinates.
+#   2. Runs the TrOCR model to recognize text.
+#   3. Calculates Character Error Rate (CER) and Word Error Rate (WER) against ground truth.
+#   4. Saves recognized text to a TXT file and evaluation metrics to another file.
+# Usage:
+#   python script.py <path_to_image> <path_to_annotation_json>
+
 import json
 import os
 import argparse

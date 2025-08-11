@@ -1,3 +1,12 @@
+# This script compares OCR output with ground truth text files by calculating
+# Word Error Rate (WER) and Character Error Rate (CER) using the jiwer library.
+# It:
+#   1. Reads two text files: the ground truth and the OCR result.
+#   2. Computes WER and CER to quantify recognition accuracy.
+#   3. Prints the results to the console.
+# Usage:
+#   python compare_texts.py <ground_truth.txt> <ocr_result.txt>
+
 import sys
 import subprocess
 import jiwer
