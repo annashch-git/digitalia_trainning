@@ -1,3 +1,35 @@
+"""
+OCR Runner Script
+
+This script is designed to run multiple OCR (Optical Character Recognition) models 
+on a given image and save their results into text files.
+
+How it works:
+1. The script defines a set of OCR models in the MODELS dictionary, where each model 
+   is mapped to its virtual environment and corresponding Python script.
+2. For each model:
+   - It activates the proper virtual environment’s Python interpreter.
+   - Runs the OCR script with the provided image.
+   - Captures the output (stdout).
+   - Extracts JSON data (expects OCR result inside a 'result' field).
+3. The OCR text is saved into a .txt file next to the original image file, 
+   named as <image_name>_<model>.txt.
+4. Logging is included for easier debugging and error tracking.
+
+Usage:
+    python main_script.py <image_path> [-v]
+
+Arguments:
+    image_path   Path to the image file that should be processed.
+    -v, --verbose  Enable detailed debug output.
+
+Notes:
+- Currently, the MODELS dictionary is empty. To enable a model, 
+  add its virtual environment and script path inside MODELS.
+- Each OCR script must output JSON with at least the key 'result' 
+  containing recognized text.
+"""
+
 import sys
 import io
 
